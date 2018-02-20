@@ -1,1 +1,10 @@
 julia 0.6
+MeshCat
+
+LightXML
+CoordinateTransformations
+GeometryTypes
+RigidBodyDynamics
+MeshIO
+FileIO
+ColorTypes
