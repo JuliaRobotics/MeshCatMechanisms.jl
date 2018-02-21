@@ -91,7 +91,7 @@ function parse_material!(materials::Dict{String, <:AbstractMaterial}, xml_materi
     material
 end
 
-function parse_link!(materials::Dict, xml_link, 
+function parse_link!(materials::Dict, xml_link,
 					 package_path=ros_package_path(), file_path="", tag="visual")
     xml_visuals = get_elements_by_tagname(xml_link, tag)
     visuals = Vector{Pair{Mesh, Transformation}}
@@ -105,7 +105,7 @@ function parse_link!(materials::Dict, xml_link,
         end
     end
     reduce(vcat, [], visual_groups)
-end  
+end
 
 function create_graph(xml_links, xml_joints)
     # create graph structure of XML elements
@@ -125,12 +125,12 @@ end
 
 ros_package_path() = split(get(ENV, "ROS_PACKAGE_PATH", ""), ':')
 
-function parse_urdf_visuals(filename, mechanism; 
+function parse_urdf_visuals(filename, mechanism;
             package_path=ros_package_path(), file_path="", tag="visual")
     xdoc = parse_file(filename)
     xroot = LightXML.root(xdoc)
     @assert LightXML.name(xroot) == "robot"
-    
+
     xml_links = get_elements_by_tagname(xroot, "link")
     xml_joints = get_elements_by_tagname(xroot, "joint")
     xml_materials = get_elements_by_tagname(xroot, "material")
@@ -144,14 +144,14 @@ function parse_urdf_visuals(filename, mechanism;
     for xml_material in xml_materials
         parse_material!(materials, xml_material)
     end
-        
+
 #     name_to_body = Dict(string(body) => body for body in bodies(mechanism))
     name_to_frame_and_body = Dict(string(tf.from) => (tf.from, body) for body in bodies(mechanism) for tf in rbd.frame_definitions(body))
-    
+
     visuals = Dict(
         map(rbd.Graphs.vertices(tree)) do vertex
             xml_link = data(vertex)
-            
+
             linkname = attribute(xml_link, "name")
             framename = if vertex == rbd.Graphs.root(tree)
                 linkname
@@ -161,7 +161,7 @@ function parse_urdf_visuals(filename, mechanism;
                 string("after_", jointname) # TODO: create function in RBD, call it here
             end
             body_frame, body = name_to_frame_and_body[framename]
-                        
+
             vis = parse_link!(materials, xml_link, package_path, file_path, tag)
             body_frame => vis
         end
@@ -174,7 +174,7 @@ struct MechanismVisualizer{M <: Mechanism}
 	visualizer::Visualizer
 	modcount::Int
 
-	function MechanismVisualizer(mechanism::M, 
+	function MechanismVisualizer(mechanism::M,
 								 frame_to_visuals::Associative{CartesianFrame3D}=create_visuals(mechanism),
 								 vis::Visualizer=Visualizer()) where {M <: Mechanism}
 		mvis = new{M}(mechanism, vis, rbd.modcount(mechanism))
@@ -184,7 +184,7 @@ struct MechanismVisualizer{M <: Mechanism}
 end
 
 MechanismVisualizer(state::MechanismState, args...) = MechanismVisualizer(state.mechanism, args...)
-MechanismVisualizer(m::Mechanism, fname::String, args...; kw...) = 
+MechanismVisualizer(m::Mechanism, fname::String, args...; kw...) =
 	MechanismVisualizer(m, parse_urdf_visuals(fname, m; kw...), args...)
 
 to_affine_map(tform::Transform3D) = AffineMap(rotation(tform), translation(tform))
@@ -200,8 +200,8 @@ function _setmechanism!(mvis::MechanismVisualizer, frame_to_visuals)
             frame = definition.from
             path = Symbol.(vcat(string.(reverse(body_ancestors)), string(frame)))
             frame_vis = vis[path...]
-            settransform!(frame_vis, to_affine_map(definition))
             if frame in keys(frame_to_visuals)
+                settransform!(frame_vis, to_affine_map(definition))
                 for (i, (object, tform)) in enumerate(frame_to_visuals[frame])
                     obj_vis = frame_vis[Symbol("geometry_", i)]
                     setobject!(obj_vis, object)
