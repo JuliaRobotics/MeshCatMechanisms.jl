@@ -4,6 +4,7 @@ using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics.OdeIntegrators
 using ValkyrieRobot
+using NBInclude
 
 vis = Visualizer()
 if !haskey(ENV, "CI")
@@ -67,5 +68,9 @@ end
         state = MechanismState(robot, randn(2), randn(2))
         integrator = MuntheKaasIntegrator(state, damped_dynamics!, runge_kutta_4(Float64), MeshCatSink(mvis))
         integrate(integrator, 10., 1e-3, max_realtime_rate = 1.)
+    end
+
+    @testset "notebook" begin
+        nbinclude(joinpath(@__DIR__, "..", "mechanism-demo.ipynb"))
     end
 end
