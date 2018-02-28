@@ -35,7 +35,7 @@ function _set_mechanism!(mvis::MechanismVisualizer, frame_to_visuals)
             if frame in keys(frame_to_visuals)
                 settransform!(frame_vis, to_affine_map(definition))
                 for (i, (object, tform)) in enumerate(frame_to_visuals[frame])
-                    obj_vis = frame_vis["geometry_$i")]
+                    obj_vis = frame_vis["geometry_$i"]
                     setobject!(obj_vis, object)
                     settransform!(obj_vis, tform)
                 end
