@@ -29,7 +29,3 @@ function animate(vis::MechanismVisualizer,
         t == tf && break
     end max_rate = fps
 end
-
-animate(mechanism::Mechanism, times::Vector{Float64},
-        configurations::Vector{Vector{Float64}}; kw...) =
-    animate(MechanismVisualizer(mechanism), times, configurations; kw...)
