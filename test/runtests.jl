@@ -1,42 +1,76 @@
-using MeshCatMechanisms
 using Base.Test
-using MeshCat: Visualizer, setobject!, settransform!
-using RigidBodyDynamics: Mechanism, MechanismState, parse_urdf, set_configuration!
-using CoordinateTransformations: Translation
-using ValkyrieRobot: Valkyrie
+using MeshCat
+using MeshCatMechanisms
+using RigidBodyDynamics
+using RigidBodyDynamics.OdeIntegrators
+using ValkyrieRobot
+using NBInclude
 
 vis = Visualizer()
-
 if !haskey(ENV, "CI")
-	open(vis)
-	wait(vis)
+    open(vis)
+    wait(vis)
 end
 
-@testset "acrobot" begin
-	urdf = "urdf/Acrobot.urdf"
-	robot = parse_urdf(Float64, urdf)
-	mvis = MechanismVisualizer(robot, urdf, vis[:acrobot, :robot])
-	state = MechanismState(robot)
-	set_configuration!(state, [1.0, -0.5])
-	setstate!(mvis, state)
-end
+@testset "MeshCatMechanisms" begin
+    @testset "URDF mechanism" begin
+        urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
+        robot = parse_urdf(Float64, urdf)
+        mvis = MechanismVisualizer(robot, urdf, vis)
+        set_configuration!(mvis, [1.0, -0.5])
 
-@testset "acrobot with fixed elbow" begin
-	urdf = "urdf/Acrobot_fixed.urdf"
-	robot = parse_urdf(Float64, urdf)
-	mvis = MechanismVisualizer(robot, urdf, vis[:acrobot_fixed, :robot])
-	settransform!(vis[:acrobot_fixed], Translation(0, 1, 0))
-	state = MechanismState(robot)
-	set_configuration!(state, [1.0])
-	setstate!(mvis, state)
-end
+        @testset "simulation and animation" begin
+            state = MechanismState(robot, randn(2), randn(2))
+            t, q, v = simulate(state, 5.0);
+            animate(mvis, t, q)
+        end
+    end
 
-@testset "valkyrie" begin
-	val = Valkyrie();
-	mvis = MechanismVisualizer(val.mechanism, ValkyrieRobot.urdfpath(), vis[:valkyrie, :robot], 
-	                           package_path=[dirname(dirname(ValkyrieRobot.urdfpath()))])
-	settransform!(vis[:valkyrie], Translation(0, 2, 1))
-	state = MechanismState(val.mechanism)
-	setstate!(mvis, state)
-end
+    @testset "URDF with fixed joints" begin
+        urdf = joinpath(@__DIR__, "urdf", "Acrobot_fixed.urdf")
+        robot = parse_urdf(Float64, urdf)
+        RigidBodyDynamics.remove_fixed_tree_joints!(robot)
+        delete!(vis)
+        mvis = MechanismVisualizer(robot, urdf, vis)
+        set_configuration!(mvis, [0.5])
 
+        @testset "simulation and animation" begin
+            state = MechanismState(robot, randn(1), randn(1))
+            t, q, v = simulate(state, 5.0);
+            animate(mvis, t, q)
+        end
+    end
+
+    @testset "Valkyrie" begin
+        val = Valkyrie();
+        delete!(vis)
+        mvis = MechanismVisualizer(
+           val.mechanism,
+           ValkyrieRobot.urdfpath(),
+           vis,
+           package_path=[dirname(dirname(ValkyrieRobot.urdfpath()))])
+    end
+
+    @testset "visualization during simulation" begin
+        urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
+        robot = parse_urdf(Float64, urdf)
+        delete!(vis)
+        mvis = MechanismVisualizer(robot, urdf, vis)
+        result = DynamicsResult{Float64}(robot)
+        function damped_dynamics!(vd::AbstractArray, sd::AbstractArray, t, state)
+            damping = 2.
+            τ = -damping * velocity(state)
+            dynamics!(result, state, τ)
+            copy!(vd, result.v̇)
+            copy!(sd, result.ṡ)
+            nothing
+        end
+        state = MechanismState(robot, randn(2), randn(2))
+        integrator = MuntheKaasIntegrator(state, damped_dynamics!, runge_kutta_4(Float64), MeshCatSink(mvis))
+        integrate(integrator, 10., 1e-3, max_realtime_rate = 1.)
+    end
+
+    @testset "notebook" begin
+        nbinclude(joinpath(@__DIR__, "..", "mechanism-demo.ipynb"))
+    end
+end
