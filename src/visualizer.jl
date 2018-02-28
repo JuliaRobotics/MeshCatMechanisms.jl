@@ -30,12 +30,12 @@ function _set_mechanism!(mvis::MechanismVisualizer, frame_to_visuals)
         body_ancestors = rbd.Graphs.ancestors(vertex, tree)
         for definition in rbd.frame_definitions(body)
             frame = definition.from
-            path = Symbol.(vcat(string.(reverse(body_ancestors)), string(frame)))
+            path = vcat(string.(reverse(body_ancestors)), string(frame))
             frame_vis = vis[path...]
             if frame in keys(frame_to_visuals)
                 settransform!(frame_vis, to_affine_map(definition))
                 for (i, (object, tform)) in enumerate(frame_to_visuals[frame])
-                    obj_vis = frame_vis[Symbol("geometry_", i)]
+                    obj_vis = frame_vis["geometry_$i")]
                     setobject!(obj_vis, object)
                     settransform!(obj_vis, tform)
                 end
@@ -58,7 +58,7 @@ function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.st
             settransform!(vis, to_affine_map(transform_to_root(state, body)))
         else
             body_ancestors = rbd.Graphs.ancestors(vertex, tree)
-            path = Symbol.(string.(reverse(body_ancestors)))
+            path = string.(reverse(body_ancestors))
             tform = relative_transform(state, default_frame(body), default_frame(body_ancestors[2]))
             settransform!(vis[path...], to_affine_map(tform))
         end
