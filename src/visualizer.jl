@@ -17,7 +17,7 @@ MechanismVisualizer(m::Mechanism, args...) = MechanismVisualizer(MechanismState{
 MechanismVisualizer(m::Mechanism, fname::AbstractString, args...; kw...) =
     MechanismVisualizer(m, parse_urdf_visuals(fname, m; kw...), args...)
 MechanismVisualizer(m::MechanismState, fname::AbstractString, args...; kw...) =
-    MechanismVisualizer(m, parse_urdf_visuals(fname, m; kw...), args...)
+    MechanismVisualizer(m, parse_urdf_visuals(fname, m.mechanism; kw...), args...)
 
 to_affine_map(tform::Transform3D) = AffineMap(rotation(tform), translation(tform))
 
