@@ -11,14 +11,6 @@ end
 Base.one(::Type{InterpolatableArray{A}}) where {A} = 1
 Base.:*(n::Number, a::InterpolatableArray) = n * a.data
 
-rbd.normalize_configuration!(joint_type::JointType, q) = nothing
-function rbd.normalize_configuration!(joint_type::QuaternionFloating, q)
-    n = norm(q[1:4])
-    for i = 1:4
-        q[i] /= n
-    end
-end
-
 """
     animate(vis::MechanismVisualizer,
             times::Vector{Float64},
