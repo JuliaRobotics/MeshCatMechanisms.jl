@@ -2,7 +2,9 @@ __precompile__()
 
 module MeshCatMechanisms
 
-export MechanismVisualizer
+export MechanismVisualizer,
+       animate,
+       MeshCatSink
 
 using LightXML
 using MeshCat
@@ -11,6 +13,7 @@ using CoordinateTransformations
 using GeometryTypes
 using RigidBodyDynamics
 using RigidBodyDynamics.Graphs
+import RigidBodyDynamics: OdeIntegrators
 const rbd = RigidBodyDynamics
 import MeshIO
 using FileIO: load
@@ -21,5 +24,6 @@ using LoopThrottle: @throttle
 include("visualizer.jl")
 include("animate.jl")
 include("parse_urdf.jl")
+include("ode_callback.jl")
 
 end # module
