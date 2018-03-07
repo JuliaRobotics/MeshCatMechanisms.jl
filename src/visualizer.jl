@@ -4,7 +4,7 @@ struct MechanismVisualizer{M <: MechanismState}
     modcount::Int
 
     function MechanismVisualizer(state::M,
-                                 frame_to_visuals::Associative{CartesianFrame3D}=create_visuals(state.mechanism),
+                                 frame_to_visuals::AbstractVector{<:VisualElement}=create_skeleton(state.mechanism),
                                  vis::Visualizer=Visualizer()) where {M <: MechanismState}
         mvis = new{M}(state, vis, rbd.modcount(state.mechanism))
         _set_mechanism!(mvis, frame_to_visuals)
@@ -21,28 +21,49 @@ MechanismVisualizer(m::MechanismState, fname::AbstractString, args...; kw...) =
 
 to_affine_map(tform::Transform3D) = AffineMap(rotation(tform), translation(tform))
 
-function _set_mechanism!(mvis::MechanismVisualizer, frame_to_visuals)
-    mechanism = mvis.state.mechanism
-    vis = mvis.visualizer
-    tree = mechanism.tree # TODO: tree accessor?
-    for vertex in rbd.Graphs.vertices(tree)
-        body = vertex
-        body_ancestors = rbd.Graphs.ancestors(vertex, tree)
-        for definition in rbd.frame_definitions(body)
-            frame = definition.from
-            path = vcat(string.(reverse(body_ancestors)), string(frame))
-            frame_vis = vis[path...]
-            if frame in keys(frame_to_visuals)
-                settransform!(frame_vis, to_affine_map(definition))
-                for (i, (object, tform)) in enumerate(frame_to_visuals[frame])
-                    obj_vis = frame_vis["geometry_$i"]
-                    setobject!(obj_vis, object)
-                    settransform!(obj_vis, tform)
-                end
-            end
-        end
+function _set_mechanism!(mvis::MechanismVisualizer, elements::AbstractVector{<:VisualElement})
+    for (i, element) in enumerate(elements)
+        _set_element!(mvis, element, "geometry_$i")
     end
 end
+
+function _set_element!(mvis::MechanismVisualizer, element::VisualElement, name::AbstractString)
+    mechanism = mvis.state.mechanism
+    vis = mvis.visualizer
+    tree = mechanism.tree
+    # TODO: much of this information can be cached if this
+    # method becomes a performance bottleneck
+    body = rbd.body_fixed_frame_to_body(mechanism, element.frame)
+    body_ancestors = rbd.Graphs.ancestors(body, tree)
+    path = vcat(string.(reverse(body_ancestors)), string(element.frame))
+    frame_vis = vis[path...]
+    definition = rbd.frame_definition(body, element.frame)
+    settransform!(frame_vis, to_affine_map(definition))
+    setobject!(frame_vis[name], element.object)
+    settransform!(frame_vis[name], element.transform)
+end
+
+
+
+#     tree = mechanism.tree # TODO: tree accessor?
+#     for vertex in rbd.Graphs.vertices(tree)
+#         body = vertex
+#         body_ancestors = rbd.Graphs.ancestors(vertex, tree)
+#         for definition in rbd.frame_definitions(body)
+#             frame = definition.from
+#             path = vcat(string.(reverse(body_ancestors)), string(frame))
+#             frame_vis = vis[path...]
+#             if frame in keys(elements)
+#                 settransform!(frame_vis, to_affine_map(definition))
+#                 for (i, (object, tform)) in enumerate(elements[frame])
+#                     obj_vis = frame_vis["geometry_$i"]
+#                     setobject!(obj_vis, object)
+#                     settransform!(obj_vis, tform)
+#                 end
+#             end
+#         end
+#     end
+# end
 
 function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.state)
     @assert mvis.state.mechanism === state.mechanism

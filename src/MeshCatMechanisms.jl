@@ -20,6 +20,7 @@ using FileIO: load
 using ColorTypes: RGBA
 using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
+using MechanismGeometries
 
 include("visualizer.jl")
 include("animate.jl")
