@@ -5,8 +5,9 @@ module MeshCatMechanisms
 export MechanismVisualizer,
        animate,
        MeshCatSink,
-       parse_urdf_visuals,
-       create_skeleton
+       Skeleton,
+       URDFVisuals,
+       visual_elements
 
 using MeshCat
 using MeshCat: AbstractMaterial, AbstractObject, MeshMaterial
@@ -15,7 +16,7 @@ using RigidBodyDynamics
 const rbd = RigidBodyDynamics
 using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
-using MechanismGeometries: VisualElement, parse_urdf_visuals, create_skeleton
+using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource
 
 include("visualizer.jl")
 include("animate.jl")

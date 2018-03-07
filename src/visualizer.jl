@@ -4,20 +4,17 @@ struct MechanismVisualizer{M <: MechanismState}
     modcount::Int
 
     function MechanismVisualizer(state::M,
-                                 frame_to_visuals::AbstractVector{<:VisualElement}=create_skeleton(state.mechanism),
+                                 source::AbstractGeometrySource=Skeleton(),
                                  vis::Visualizer=Visualizer()) where {M <: MechanismState}
         mvis = new{M}(state, vis, rbd.modcount(state.mechanism))
-        _set_mechanism!(mvis, frame_to_visuals)
+        elements = visual_elements(state.mechanism, source)
+        _set_mechanism!(mvis, elements)
         _render_state!(mvis)
         mvis
     end
 end
 
 MechanismVisualizer(m::Mechanism, args...) = MechanismVisualizer(MechanismState{Float64}(m), args...)
-MechanismVisualizer(m::Mechanism, fname::AbstractString, args...; kw...) =
-    MechanismVisualizer(m, parse_urdf_visuals(fname, m; kw...), args...)
-MechanismVisualizer(m::MechanismState, fname::AbstractString, args...; kw...) =
-    MechanismVisualizer(m, parse_urdf_visuals(fname, m.mechanism; kw...), args...)
 
 to_affine_map(tform::Transform3D) = AffineMap(rotation(tform), translation(tform))
 
