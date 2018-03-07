@@ -68,3 +68,5 @@ function rbd.set_configuration!(mvis::MechanismVisualizer, args...)
     set_configuration!(mvis.state, args...)
     _render_state!(mvis)
 end
+
+MeshCat.IJuliaCell(mvis::MechanismVisualizer) = MeshCat.IJuliaCell(mvis.visualizer)

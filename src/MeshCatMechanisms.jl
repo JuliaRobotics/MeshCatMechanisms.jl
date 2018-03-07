@@ -4,7 +4,9 @@ module MeshCatMechanisms
 
 export MechanismVisualizer,
        animate,
-       MeshCatSink
+       MeshCatSink,
+       parse_urdf_visuals,
+       create_skeleton
 
 using MeshCat
 using MeshCat: AbstractMaterial, AbstractObject, MeshMaterial
