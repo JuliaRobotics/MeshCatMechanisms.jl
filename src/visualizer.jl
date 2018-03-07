@@ -39,31 +39,9 @@ function _set_element!(mvis::MechanismVisualizer, element::VisualElement, name::
     frame_vis = vis[path...]
     definition = rbd.frame_definition(body, element.frame)
     settransform!(frame_vis, to_affine_map(definition))
-    setobject!(frame_vis[name], element.object)
+    setobject!(frame_vis[name], element.geometry, MeshLambertMaterial(color=element.color))
     settransform!(frame_vis[name], element.transform)
 end
-
-
-
-#     tree = mechanism.tree # TODO: tree accessor?
-#     for vertex in rbd.Graphs.vertices(tree)
-#         body = vertex
-#         body_ancestors = rbd.Graphs.ancestors(vertex, tree)
-#         for definition in rbd.frame_definitions(body)
-#             frame = definition.from
-#             path = vcat(string.(reverse(body_ancestors)), string(frame))
-#             frame_vis = vis[path...]
-#             if frame in keys(elements)
-#                 settransform!(frame_vis, to_affine_map(definition))
-#                 for (i, (object, tform)) in enumerate(elements[frame])
-#                     obj_vis = frame_vis["geometry_$i"]
-#                     setobject!(obj_vis, object)
-#                     settransform!(obj_vis, tform)
-#                 end
-#             end
-#         end
-#     end
-# end
 
 function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.state)
     @assert mvis.state.mechanism === state.mechanism
@@ -86,7 +64,7 @@ function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.st
     end
 end
 
-function RigidBodyDynamics.set_configuration!(mvis::MechanismVisualizer, args...)
+function rbd.set_configuration!(mvis::MechanismVisualizer, args...)
     set_configuration!(mvis.state, args...)
     _render_state!(mvis)
 end

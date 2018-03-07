@@ -1,4 +1,4 @@
-mutable struct MeshCatSink{M <: MechanismState} <: OdeIntegrators.OdeResultsSink
+mutable struct MeshCatSink{M <: MechanismState} <: rbd.OdeIntegrators.OdeResultsSink
     vis::MechanismVisualizer{M}
     min_wall_Δt::Float64
     last_update_wall_time::Float64
@@ -8,12 +8,12 @@ mutable struct MeshCatSink{M <: MechanismState} <: OdeIntegrators.OdeResultsSink
     end
 end
 
-function OdeIntegrators.initialize(sink::MeshCatSink, t, state)
+function rbd.OdeIntegrators.initialize(sink::MeshCatSink, t, state)
     sink.last_update_wall_time = -Inf
-    OdeIntegrators.process(sink, t, state)
+    rbd.OdeIntegrators.process(sink, t, state)
 end
 
-function OdeIntegrators.process(sink::MeshCatSink, t, state)
+function rbd.OdeIntegrators.process(sink::MeshCatSink, t, state)
     wall_Δt = time() - sink.last_update_wall_time
     if wall_Δt > sink.min_wall_Δt
         set_configuration!(sink.vis, configuration(state))
