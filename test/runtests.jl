@@ -63,8 +63,8 @@ end
     @testset "visualization during simulation" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
-        delete!(vis)
-        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis[:acrobot][:robot])
+        settransform!(vis[:acrobot], Translation(0, -2, 0))
         result = DynamicsResult{Float64}(robot)
         function damped_dynamics!(vd::AbstractArray, sd::AbstractArray, t, state)
             damping = 2.
