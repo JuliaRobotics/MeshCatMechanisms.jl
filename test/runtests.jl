@@ -16,7 +16,7 @@ end
     @testset "URDF mechanism" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         set_configuration!(mvis, [1.0, -0.5])
 
         @testset "simulation and animation" begin
@@ -31,7 +31,7 @@ end
         robot = parse_urdf(Float64, urdf)
         RigidBodyDynamics.remove_fixed_tree_joints!(robot)
         delete!(vis)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         set_configuration!(mvis, [0.5])
 
         @testset "simulation and animation" begin
@@ -46,16 +46,15 @@ end
         delete!(vis)
         mvis = MechanismVisualizer(
            val.mechanism,
-           ValkyrieRobot.urdfpath(),
-           vis,
-           package_path=[dirname(dirname(ValkyrieRobot.urdfpath()))])
+           URDFVisuals(ValkyrieRobot.urdfpath(), package_path=[ValkyrieRobot.packagepath()]),
+           vis)
     end
 
     @testset "visualization during simulation" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
         delete!(vis)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         result = DynamicsResult{Float64}(robot)
         function damped_dynamics!(vd::AbstractArray, sd::AbstractArray, t, state)
             damping = 2.
