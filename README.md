@@ -11,9 +11,26 @@ Features:
 * Animation of robot trajectories from RigidBodyDynamics.jl simulations
 * Live rendering of simulation progress using the `OdeIntegrators.OdeResultsSink` interface
 
-# Related Projects
+## Related Projects
 
 MeshCatMechanisms.jl provides similar functionality to [RigidBodyTreeInspector.jl](https://github.com/rdeits/RigidBodyTreeInspector.jl), but is built on top of the lighter-weight MeshCat viewer instead of [DrakeVisualizer.jl](https://github.com/rdeits/DrakeVisualizer.jl).
+
+# Installation 
+
+Stable release:
+
+```julia
+Pkg.add("MeshCatMechanisms")
+```
+
+Latest and greatest:
+
+```julia
+Pkg.add("MeshCatMechanisms")
+Pkg.clone("https://github.com/rdeits/MechanismGeometries.jl")
+Pkg.checkout("MeshCatMechanisms")
+Pkg.checkout("MeshCat")
+```
 
 # Usage
 
