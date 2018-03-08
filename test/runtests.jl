@@ -3,6 +3,7 @@ using MeshCat
 using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics.OdeIntegrators
+using CoordinateTransformations: Translation
 using ValkyrieRobot
 using NBInclude
 
@@ -16,7 +17,7 @@ end
     @testset "URDF mechanism" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         set_configuration!(mvis, [1.0, -0.5])
 
         @testset "simulation and animation" begin
@@ -31,7 +32,7 @@ end
         robot = parse_urdf(Float64, urdf)
         RigidBodyDynamics.remove_fixed_tree_joints!(robot)
         delete!(vis)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         set_configuration!(mvis, [0.5])
 
         @testset "simulation and animation" begin
@@ -46,16 +47,24 @@ end
         delete!(vis)
         mvis = MechanismVisualizer(
            val.mechanism,
-           ValkyrieRobot.urdfpath(),
-           vis,
-           package_path=[dirname(dirname(ValkyrieRobot.urdfpath()))])
+           URDFVisuals(ValkyrieRobot.urdfpath(), package_path=[ValkyrieRobot.packagepath()]),
+           vis[:val_urdf])
+    end
+
+    @testset "valkyrie inertias" begin
+        val = Valkyrie();
+        mvis = MechanismVisualizer(
+           val.mechanism,
+           Skeleton(),
+           vis[:val_inertia])
+        settransform!(vis[:val_inertia], Translation(0, 2, 0))
     end
 
     @testset "visualization during simulation" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
-        delete!(vis)
-        mvis = MechanismVisualizer(robot, urdf, vis)
+        mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis[:acrobot][:robot])
+        settransform!(vis[:acrobot], Translation(0, -2, 0))
         result = DynamicsResult{Float64}(robot)
         function damped_dynamics!(vd::AbstractArray, sd::AbstractArray, t, state)
             damping = 2.
