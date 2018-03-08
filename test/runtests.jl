@@ -47,7 +47,16 @@ end
         mvis = MechanismVisualizer(
            val.mechanism,
            URDFVisuals(ValkyrieRobot.urdfpath(), package_path=[ValkyrieRobot.packagepath()]),
-           vis)
+           vis[:val_urdf])
+    end
+
+    @testset "valkyrie inertias" begin
+        val = Valkyrie();
+        mvis = MechanismVisualizer(
+           val.mechanism,
+           Skeleton(),
+           vis[:val_inertia])
+        settransform!(vis[:val_inertia], Translation(0, 2, 0))
     end
 
     @testset "visualization during simulation" begin
