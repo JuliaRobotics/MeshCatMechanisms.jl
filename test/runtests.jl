@@ -3,6 +3,7 @@ using MeshCat
 using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics.OdeIntegrators
+using CoordinateTransformations: Translation
 using ValkyrieRobot
 using NBInclude
 
