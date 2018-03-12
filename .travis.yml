@@ -25,10 +25,6 @@ addons:
     packages:
       - libzmq3
 
-## uncomment the following lines to override the default test script
-script:
- - julia -e 'Pkg.clone("https://github.com/rdeits/MeshCat.jl"); Pkg.build("MeshCat")'
- - julia -e 'Pkg.clone(pwd()); Pkg.checkout("RigidBodyDynamics"); Pkg.build("MeshCatMechanisms"); Pkg.test("MeshCatMechanisms"; coverage=true)';
 after_success:
   # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("MeshCatMechanisms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
