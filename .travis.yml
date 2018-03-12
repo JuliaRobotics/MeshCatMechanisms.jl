@@ -25,6 +25,9 @@ addons:
     packages:
       - libzmq3
 
+before_script:
+  - julia -e 'Pkg.init(); Pkg.add("MeshCat"); Pkg.checkout("MeshCat")'
+
 after_success:
   # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("MeshCatMechanisms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
