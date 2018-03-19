@@ -8,16 +8,16 @@ using ValkyrieRobot
 using NBInclude
 
 vis = Visualizer()
-if !haskey(ENV, "CI")
-    open(vis)
-    wait(vis)
-end
 
 @testset "MeshCatMechanisms" begin
     @testset "URDF mechanism" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
         robot = parse_urdf(Float64, urdf)
         mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
+        if !haskey(ENV, "CI")
+            open(mvis)
+            wait(mvis)
+        end
         set_configuration!(mvis, [1.0, -0.5])
 
         @testset "simulation and animation" begin
