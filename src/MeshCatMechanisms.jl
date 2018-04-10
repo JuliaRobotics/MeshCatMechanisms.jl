@@ -10,7 +10,7 @@ export MechanismVisualizer,
        visual_elements
 
 using MeshCat
-using MeshCat: AbstractMaterial, AbstractObject, MeshMaterial
+using MeshCat: AbstractMaterial, AbstractObject
 using CoordinateTransformations
 using RigidBodyDynamics
 const rbd = RigidBodyDynamics
