@@ -7,7 +7,8 @@ export MechanismVisualizer,
        MeshCatSink,
        Skeleton,
        URDFVisuals,
-       visual_elements
+       visual_elements,
+       set_configuration!
 
 using MeshCat
 using MeshCat: AbstractMaterial, AbstractObject

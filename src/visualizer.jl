@@ -66,6 +66,8 @@ function rbd.set_configuration!(mvis::MechanismVisualizer, args...)
     _render_state!(mvis)
 end
 
+rbd.configuration(mvis::MechanismVisualizer, args...) = configuration(mvis.state, args...)
+
 MeshCat.IJuliaCell(mvis::MechanismVisualizer) = MeshCat.IJuliaCell(mvis.visualizer)
 Base.open(mvis::MechanismVisualizer) = open(mvis.visualizer)
 Base.wait(mvis::MechanismVisualizer) = wait(mvis.visualizer)
