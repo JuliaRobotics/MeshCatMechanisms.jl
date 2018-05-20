@@ -27,6 +27,7 @@ addons:
 
 before_script:
   - julia -e 'Pkg.init(); Pkg.add("MeshCat"); Pkg.checkout("MeshCat")'
+  - julia -e 'Pkg.checkout("WebIO")'
 
 after_success:
   # push coverage results to Codecov

@@ -18,7 +18,10 @@ vis = Visualizer()
             open(mvis)
             wait(mvis)
         end
-        set_configuration!(mvis, [1.0, -0.5])
+        set_configuration!(mvis, [0, -0.5])
+        set_configuration!(mvis, findjoint(robot, "shoulder"), 1.0)
+        @test configuration(mvis) == [1.0, -0.5]
+        @test configuration(mvis, findjoint(robot, "shoulder")) == [1.0]
 
         @testset "simulation and animation" begin
             state = MechanismState(robot, randn(2), randn(2))
