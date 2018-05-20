@@ -8,7 +8,8 @@ export MechanismVisualizer,
        Skeleton,
        URDFVisuals,
        visual_elements,
-       set_configuration!
+       set_configuration!,
+       IJuliaCell
 
 using MeshCat
 using MeshCat: AbstractMaterial, AbstractObject
