@@ -57,6 +57,10 @@ end
 setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, args...) = setelement!(mvis, frame, Object(geometry), args...)
 setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, args...) = setelement!(mvis, frame, Object(geometry, material), args...)
 
+# Special cases for visualizing frames and points
+setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, args...) = setelement!(mvis, frame, Triad(scale), args...)
+setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, args...) = setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), args...)
+
 function _path(mechanism, body)
     body_ancestors = ancestors(body, mechanism.tree)
     path = string.(reverse(body_ancestors))
