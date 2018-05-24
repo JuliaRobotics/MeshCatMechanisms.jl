@@ -23,6 +23,9 @@ vis = Visualizer()
         @test configuration(mvis) == [1.0, -0.5]
         @test configuration(mvis, findjoint(robot, "shoulder")) == [1.0]
 
+        setelement!(mvis, default_frame(bodies(robot)[end]))
+        setelement!(mvis, Point3D(default_frame(bodies(robot)[3]), 0.2, 0.2, 0.2))
+
         @testset "simulation and animation" begin
             state = MechanismState(robot, randn(2), randn(2))
             t, q, v = simulate(state, 5.0);
