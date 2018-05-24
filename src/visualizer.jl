@@ -68,17 +68,15 @@ function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.st
     if rbd.modcount(state.mechanism) != mvis.modcount
         error("Mechanism has been modified after creating the visualizer. Please create a new MechanismVisualizer")
     end
-    mechanism = mvis.state.mechanism
     vis = mvis.visualizer
-    tree = mechanism.tree # TODO: tree accessor?
+    tree = mechanism(mvis).tree # TODO: tree accessor?
     for body in vertices(tree)
         if body == root(tree)
             settransform!(vis, to_affine_map(transform_to_root(state, body)))
         else
-            path = _path(mechanism, body)
-            parent = source(edge_to_parent(body, mechanism.tree), mechanism.tree)
+            parent = source(edge_to_parent(body, tree), tree)
             tform = relative_transform(state, default_frame(body), default_frame(parent))
-            settransform!(vis[path...], to_affine_map(tform))
+            settransform!(mvis[body], to_affine_map(tform))
         end
     end
 end
