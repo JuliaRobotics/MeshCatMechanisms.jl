@@ -41,11 +41,24 @@ function Base.getindex(mvis::MechanismVisualizer, body::RigidBody)
     mvis[path...]
 end
 
+"""
+Attach the given visual element to the visualizer.
+
+$(SIGNATURES)
+
+The element's frame will determine how its geometry is attached to the scene
+tree, so that any other geometries attached to the same body will all move together.
+"""
 function setelement!(mvis::MechanismVisualizer, element::VisualElement, name::AbstractString="<element>")
     setelement!(mvis, element.frame, element.geometry, MeshLambertMaterial(color=element.color), name)
     settransform!(mvis[element.frame][name], element.transform)
 end
 
+"""
+Attach the given geometric object (geometry + material) to the visualizer at the given frame
+
+$(SIGNATURES)
+"""
 function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, object::AbstractObject, name::AbstractString="<element>")
     body = rbd.body_fixed_frame_to_body(mechanism(mvis), frame)
     definition = rbd.frame_definition(body, frame)
@@ -54,11 +67,33 @@ function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, object:
     setobject!(frame_vis[name], object)
 end
 
+"""
+Attach the given geometry to the visualizer at the given frame, using its default material
+
+$(SIGNATURES)
+"""
 setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, args...) = setelement!(mvis, frame, Object(geometry), args...)
+
+"""
+Construct an object with the given geometry and material and attach it to the visualizer
+
+$(SIGNATURES)
+"""
 setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, args...) = setelement!(mvis, frame, Object(geometry, material), args...)
 
 # Special cases for visualizing frames and points
+"""
+Add a Triad geometry with the given scale to the visualizer at the specified frame
+
+$(SIGNATURES)
+"""
 setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, args...) = setelement!(mvis, frame, Triad(scale), args...)
+
+"""
+Add a HyperSphere geometry with the given radius to the visualizer at the given point
+
+$(SIGNATURES)
+"""
 setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, args...) = setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), args...)
 
 function _path(mechanism, body)
@@ -85,6 +120,11 @@ function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.st
     end
 end
 
+"""
+Set the configuration of the mechanism visualizer and re-render it
+
+$(SIGNATURES)
+"""
 function rbd.set_configuration!(mvis::MechanismVisualizer, args...)
     set_configuration!(mvis.state, args...)
     _render_state!(mvis)
