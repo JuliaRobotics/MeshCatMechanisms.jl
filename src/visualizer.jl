@@ -42,10 +42,9 @@ function Base.getindex(mvis::MechanismVisualizer, body::RigidBody)
 end
 
 """
+    setelement!(mvis::MechanismVisualizer, element::VisualElement, name::AbstractString="<element>")
+
 Attach the given visual element to the visualizer.
-
-$(SIGNATURES)
-
 The element's frame will determine how its geometry is attached to the scene
 tree, so that any other geometries attached to the same body will all move together.
 """
@@ -55,9 +54,9 @@ function setelement!(mvis::MechanismVisualizer, element::VisualElement, name::Ab
 end
 
 """
-Attach the given geometric object (geometry + material) to the visualizer at the given frame
+    setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, object::AbstractObject, name::AbstractString="<element>")
 
-$(SIGNATURES)
+Attach the given geometric object (geometry + material) to the visualizer at the given frame
 """
 function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, object::AbstractObject, name::AbstractString="<element>")
     body = rbd.body_fixed_frame_to_body(mechanism(mvis), frame)
@@ -68,33 +67,33 @@ function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, object:
 end
 
 """
-Attach the given geometry to the visualizer at the given frame, using its default material
+    setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, name::AbstractString="<element>")
 
-$(SIGNATURES)
+Attach the given geometry to the visualizer at the given frame, using its default material.
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, args...) = setelement!(mvis, frame, Object(geometry), args...)
+setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, name::AbstractString="<element>") = setelement!(mvis, frame, Object(geometry), name)
 
 """
+    setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, name::AbstractString="<element>")
+
 Construct an object with the given geometry and material and attach it to the visualizer
-
-$(SIGNATURES)
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, args...) = setelement!(mvis, frame, Object(geometry, material), args...)
+setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, name::AbstractString="<element>") = setelement!(mvis, frame, Object(geometry, material), name)
 
 # Special cases for visualizing frames and points
 """
+    setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, name::AbstractString="<element>")
+
 Add a Triad geometry with the given scale to the visualizer at the specified frame
-
-$(SIGNATURES)
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, args...) = setelement!(mvis, frame, Triad(scale), args...)
+setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, name::AbstractString="<element>") = setelement!(mvis, frame, Triad(scale), name)
 
 """
+    setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, name::AbstractString="<element>")
+
 Add a HyperSphere geometry with the given radius to the visualizer at the given point
-
-$(SIGNATURES)
 """
-setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, args...) = setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), args...)
+setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, name::AbstractString="<element>") = setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), name)
 
 function _path(mechanism, body)
     body_ancestors = ancestors(body, mechanism.tree)
@@ -121,9 +120,18 @@ function _render_state!(mvis::MechanismVisualizer, state::MechanismState=mvis.st
 end
 
 """
-Set the configuration of the mechanism visualizer and re-render it
+    set_configuration!(mvis::MechanismVisualizer, args...)
 
-$(SIGNATURES)
+Set the configuration of the mechanism visualizer and re-render it.
+
+# Examples
+```julia-repl
+julia> set_configuration!(vis, [1., 2., 3.])
+```
+
+```julia-repl
+julia> set_configuration!(vis, findjoint(robot, "shoulder"), 1.0)
+```
 """
 function rbd.set_configuration!(mvis::MechanismVisualizer, args...)
     set_configuration!(mvis.state, args...)
