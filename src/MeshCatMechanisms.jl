@@ -9,7 +9,8 @@ export MechanismVisualizer,
 
 # Re-export from MeshCat.jl
 export IJuliaCell,
-       Triad
+       Triad,
+       setanimation!
 
 # Re-export from MechanismGeometries.jl
 export VisualElement,
@@ -22,7 +23,6 @@ export set_configuration!,
        Point3D
 
 using MeshCat
-using MeshCat: AbstractMaterial, AbstractObject, GeometryLike, Object
 using CoordinateTransformations
 using RigidBodyDynamics
 const rbd = RigidBodyDynamics

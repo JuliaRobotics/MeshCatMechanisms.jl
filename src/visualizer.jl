@@ -1,22 +1,31 @@
-struct MechanismVisualizer{M <: MechanismState}
+struct MechanismVisualizer{M <: MechanismState, V <: AbstractVisualizer}
     state::M
-    visualizer::Visualizer
+    visualizer::V
     modcount::Int
 
-    function MechanismVisualizer(state::M,
-                                 source::AbstractGeometrySource=Skeleton(),
-                                 vis::Visualizer=Visualizer()) where {M <: MechanismState}
-        mvis = new{M}(state, vis, rbd.modcount(state.mechanism))
-        elements = visual_elements(state.mechanism, source)
-        _set_mechanism!(mvis, elements)
-        _render_state!(mvis)
-        mvis
+    function MechanismVisualizer(state::M, vis::V) where {M <: MechanismState, V <: AbstractVisualizer}
+        new{M, V}(state, vis, rbd.modcount(state.mechanism))
     end
+end
+
+function MechanismVisualizer(state::MechanismState, source::AbstractGeometrySource=Skeleton(), vis::AbstractVisualizer=Visualizer())
+    vis = MechanismVisualizer(state, vis)
+    setelement!(vis, source)
+    vis
+end
+
+function setelement!(vis::MechanismVisualizer, source::AbstractGeometrySource)
+    elements = visual_elements(mechanism(vis), source)
+    @show elements
+    _set_mechanism!(vis, elements)
+    _render_state!(vis)
 end
 
 MechanismVisualizer(m::Mechanism, args...) = MechanismVisualizer(MechanismState{Float64}(m), args...)
 
+state(mvis::MechanismVisualizer) = mvis.state
 mechanism(mvis::MechanismVisualizer) = mvis.state.mechanism
+visualizer(mvis::MechanismVisualizer) = mvis.visualizer
 
 to_affine_map(tform::Transform3D) = AffineMap(rotation(tform), translation(tform))
 
