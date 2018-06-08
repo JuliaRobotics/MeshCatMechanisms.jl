@@ -16,7 +16,6 @@ end
 
 function setelement!(vis::MechanismVisualizer, source::AbstractGeometrySource)
     elements = visual_elements(mechanism(vis), source)
-    @show elements
     _set_mechanism!(vis, elements)
     _render_state!(vis)
 end
