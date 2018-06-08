@@ -29,3 +29,25 @@ function animate(vis::MechanismVisualizer,
         t == tf && break
     end max_rate = fps
 end
+
+function MeshCat.setanimation!(mvis::MechanismVisualizer,
+                      times::Vector{Float64},
+                      configurations::AbstractVector{<:AbstractVector{<:Real}};
+                      fps::Integer=30,
+                      play::Bool=true,
+                      repetitions::Integer=1)
+    q0 = copy(configuration(state(mvis)))
+    @assert indices(times) == indices(configurations)
+    interpolated_configurations = interpolate((times,), configurations, Gridded(Linear()))
+    animation = Animation()
+    num_frames = floor(Int, (times[end] - first(times)) * fps)
+    for frame in 0:num_frames
+        time = first(times) + frame / fps
+        set_configuration!(state(mvis), interpolated_configurations[time])
+        atframe(animation, visualizer(mvis), frame) do frame_visualizer
+            _render_state!(MechanismVisualizer(state(mvis), frame_visualizer))
+        end
+    end
+    setanimation!(visualizer(mvis), animation, play=play, repetitions=repetitions)
+    set_configuration!(state(mvis), q0)
+end

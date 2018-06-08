@@ -30,6 +30,7 @@ vis = Visualizer()
             state = MechanismState(robot, randn(2), randn(2))
             t, q, v = simulate(state, 5.0);
             animate(mvis, t, q)
+            setanimation!(mvis, t, q)
         end
     end
 
@@ -45,6 +46,7 @@ vis = Visualizer()
             state = MechanismState(robot, randn(1), randn(1))
             t, q, v = simulate(state, 5.0);
             animate(mvis, t, q)
+            setanimation!(mvis, t, q)
         end
     end
 
