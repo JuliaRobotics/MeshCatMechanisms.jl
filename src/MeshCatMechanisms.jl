@@ -22,6 +22,7 @@ export VisualElement,
 export set_configuration!,
        Point3D
 
+using MeshCat
 using CoordinateTransformations
 using RigidBodyDynamics
 const rbd = RigidBodyDynamics
@@ -30,7 +31,6 @@ using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource
 using GeometryTypes: HyperSphere, Point
-using MeshCat
 
 include("visualizer.jl")
 include("animate.jl")
