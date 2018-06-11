@@ -4,6 +4,6 @@ CoordinateTransformations 0.4.1
 Interpolations 0.3.6
 LoopThrottle 0.0.1
 MechanismGeometries 0.0.1
-MeshCat 0.0.2
+MeshCat 0.2.0
 RigidBodyDynamics 0.4
 GeometryTypes 0.4
