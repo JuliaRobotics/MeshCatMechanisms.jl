@@ -4,6 +4,14 @@
 #  For a similar demo rendered in Jupyter instead, see the
 #  `interactive_manipulation.ipynb` notebook.
 
+# Don't open windows when we're running this test
+# on the Travis CI build servers
+if haskey(ENV, "CI")
+    options = Dict{Symbol, Any}(:show => false)
+else
+    options = Dict{Symbol, Any}()
+end
+
 # Import our packages
 using MeshCatMechanisms
 using RigidBodyDynamics
@@ -21,9 +29,9 @@ mechanism = rand_chain_mechanism(Float64,
 mvis = MechanismVisualizer(mechanism, Skeleton(randomize_colors=true))
 
 # Open the visualizer in a new window
-open(mvis, Window())
+open(mvis, Window(options))
 
 # Create sliders to manipulate the visualizer's configuration
 widget = manipulate!(mvis)
 # Render those sliders in a new window
-body!(Window(), widget)
+body!(Window(options), widget)
