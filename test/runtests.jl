@@ -87,7 +87,24 @@ vis = Visualizer()
         integrate(integrator, 10., 1e-3, max_realtime_rate = 1.)
     end
 
-    @testset "notebook" begin
-        nbinclude(joinpath(@__DIR__, "..", "mechanism-demo.ipynb"))
+    @testset "manipulation" begin
+        delete!(vis)
+        mechanism = rand_chain_mechanism(Float64, [QuaternionFloating{Float64}; [Revolute{Float64} for i = 1:5]]...)
+        mvis = MechanismVisualizer(mechanism)
+        widget = manipulate!(mvis)
+    end
+
+    @testset "examples" begin
+        dir = joinpath(@__DIR__, "..", "examples")
+        for file in readdir(dir)
+            base, ext = splitext(file)
+            if ext == ".jl"
+                println("Running $file")
+                include(joinpath(dir, file))
+            elseif ext == ".ipynb"
+                println("Running notebook $file")
+                nbinclude(joinpath(dir, file))
+            end
+        end
     end
 end

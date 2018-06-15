@@ -10,6 +10,7 @@ Features:
 * Parsing geometry directly from URDF files
 * Animation of robot trajectories from RigidBodyDynamics.jl simulations
 * Live rendering of simulation progress using the `OdeIntegrators.OdeResultsSink` interface
+* Interactive manipulation of the mechanism configuration using [InteractBase.jl](https://github.com/piever/InteractBase.jl)
 
 ## Related Projects
 
@@ -34,7 +35,7 @@ Pkg.checkout("MeshCat")
 
 # Usage
 
-See [mechanism-demo.ipynb](mechanism-demo.ipynb)
+See [examples/demo.ipynb](examples/demo.ipynb)
 
 # Examples
 
