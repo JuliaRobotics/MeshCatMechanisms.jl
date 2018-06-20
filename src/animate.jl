@@ -31,7 +31,7 @@ function animate(vis::MechanismVisualizer,
 end
 
 function MeshCat.setanimation!(mvis::MechanismVisualizer,
-                      times::Vector{Float64},
+                      times::AbstractVector{<:Real},
                       configurations::AbstractVector{<:AbstractVector{<:Real}};
                       fps::Integer=30,
                       play::Bool=true,

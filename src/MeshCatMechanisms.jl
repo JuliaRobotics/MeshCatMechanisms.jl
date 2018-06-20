@@ -5,7 +5,8 @@ module MeshCatMechanisms
 export MechanismVisualizer,
        animate,
        MeshCatSink,
-       setelement!
+       setelement!,
+       manipulate!
 
 # Re-export from MeshCat.jl
 export IJuliaCell,
@@ -35,5 +36,6 @@ using GeometryTypes: HyperSphere, Point
 include("visualizer.jl")
 include("animate.jl")
 include("ode_callback.jl")
+include("manipulate.jl")
 
 end # module
