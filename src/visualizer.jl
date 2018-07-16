@@ -152,7 +152,7 @@ MeshCat.IJuliaCell(mvis::MechanismVisualizer, args...; kw...) = MeshCat.IJuliaCe
 Base.open(mvis::MechanismVisualizer, args...; kw...) = open(mvis.visualizer, args...; kw...)
 Base.wait(mvis::MechanismVisualizer) = wait(mvis.visualizer)
 
-function Base.copy!(mvis::MechanismVisualizer, state::Union{MechanismState, AbstractVector})
-    copy!(mvis.state, state)
+function Compat.copyto!(mvis::MechanismVisualizer, state::Union{MechanismState, AbstractVector})
+    Compat.copyto!(mvis.state, state)
     _render_state!(mvis)
 end
