@@ -32,10 +32,12 @@ using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource
 using GeometryTypes: HyperSphere, Point
+import Compat
 
 include("visualizer.jl")
 include("animate.jl")
 include("ode_callback.jl")
 include("manipulate.jl")
+using .Manipulate
 
 end # module

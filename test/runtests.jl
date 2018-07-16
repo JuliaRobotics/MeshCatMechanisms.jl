@@ -22,6 +22,8 @@ vis = Visualizer()
         set_configuration!(mvis, findjoint(robot, "shoulder"), 1.0)
         @test configuration(mvis) == [1.0, -0.5]
         @test configuration(mvis, findjoint(robot, "shoulder")) == [1.0]
+        copy!(mvis, [0.1, -0.6, 0.0, 0.0])
+        @test configuration(mvis) == [0.1, -0.6]
 
         setelement!(mvis, default_frame(bodies(robot)[end]))
         setelement!(mvis, Point3D(default_frame(bodies(robot)[3]), 0.2, 0.2, 0.2))
@@ -103,7 +105,7 @@ vis = Visualizer()
                 include(joinpath(dir, file))
             elseif ext == ".ipynb"
                 println("Running notebook $file")
-                nbinclude(joinpath(dir, file))
+                @nbinclude(joinpath(dir, file))
             end
         end
     end

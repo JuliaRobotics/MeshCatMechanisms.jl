@@ -1,7 +1,12 @@
+module Manipulate
+
+export manipulate!
+
+using MeshCatMechanisms
+using RigidBodyDynamics
 using RigidBodyDynamics: Bounds, position_bounds, lower, upper
-import InteractBase
-using InteractBase: slider, Widget, observe, vbox, widget
-using WebIO: Node
+using InteractBase: slider, Widget, observe, vbox
+using DataStructures: OrderedDict
 
 function remove_infs(b::Bounds, default=Float64(π))
     Bounds(isfinite(lower(b)) ? lower(b) : -default,
@@ -28,38 +33,43 @@ function sliders(joint::Joint, values=zeros(num_positions(joint));
     end
 end
 
-function combined_observable(::Joint, sliders::AbstractVector{<:Widget})
-    map((args...) -> vcat(args...), observe.(sliders)...)
-end
-
-function combined_observable(::Joint{T, <:QuaternionFloating}, sliders::AbstractVector{<:Widget}) where T
-    map(observe.(sliders)...) do rw, rx, ry, rz, x, y, z
-        n = norm([rw, rx, ry, rz])
-        if n == 0
-            n = 1.0
-        end
-        [rw / n, rx / n, ry / n, rz / n, x, y, z]
+function combined_observable(joint::Joint, sliders::AbstractVector)
+    map(observe.(sliders)...) do args...
+        q = vcat(args...)
+        normalize_configuration!(q, joint)
+        q
     end
 end
 
-function InteractBase.widget(joint::Joint, initial_value=zeros(num_positions(joint)); prefix=string(joint, '.'))
+function widget(joint::Joint{T, <:Fixed}, args...) where T
+    Widget{:rbd_joint}()
+end
+
+function widget(joint::Joint, initial_value=zeros(num_positions(joint)); prefix=string(joint, '.'))
     s = sliders(joint, initial_value, prefix=prefix)
-    observable = combined_observable(joint, s)
-    node = Node(:div, vbox(s...))
-    Widget{:rbd_joint}(node, observable)
+    keys = Symbol.(slider_labels(joint))
+    w = Widget{:rbd_joint}(OrderedDict(zip(keys, s)))
+    w.output = combined_observable(joint, s)
+    w.display = map(identity, w.output)
+    w.layout = x -> vbox(s...)
+    w
 end
 
 function manipulate!(callback::Function, state::MechanismState)
     joint_list = joints(state.mechanism)
     widgets = widget.(joint_list, configuration.(state, joint_list))
-    obs = map(observe.(widgets)...) do signals...
+    keys = Symbol.(joint_list)
+    w = Widget{:rbd_manipulator}(OrderedDict(zip(keys, widgets)))
+    w.output = map(observe.(widgets)...) do signals...
         for i in 1:length(joint_list)
-            set_configuration!(state, joint_list[i], signals[i])
+            if num_positions(joint_list[i]) > 0
+                set_configuration!(state, joint_list[i], signals[i])
+            end
         end
         callback(state)
     end
-    node = Node(:div, vbox(widgets...))
-    Widget{:rbd_manipulator}(node, obs)
+    w.layout = x -> vbox(widgets...)
+    w
 end
 
 function manipulate!(callback::Function, vis::MechanismVisualizer)
@@ -70,3 +80,5 @@ function manipulate!(callback::Function, vis::MechanismVisualizer)
 end
 
 manipulate!(vis::MechanismVisualizer) = manipulate!(x -> nothing, vis)
+
+end

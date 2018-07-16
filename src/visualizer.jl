@@ -151,3 +151,8 @@ rbd.configuration(mvis::MechanismVisualizer, args...) = configuration(mvis.state
 MeshCat.IJuliaCell(mvis::MechanismVisualizer, args...; kw...) = MeshCat.IJuliaCell(mvis.visualizer, args...; kw...)
 Base.open(mvis::MechanismVisualizer, args...; kw...) = open(mvis.visualizer, args...; kw...)
 Base.wait(mvis::MechanismVisualizer) = wait(mvis.visualizer)
+
+function Compat.copyto!(mvis::MechanismVisualizer, state::Union{MechanismState, AbstractVector})
+    Compat.copyto!(mvis.state, state)
+    _render_state!(mvis)
+end
