@@ -4,25 +4,21 @@ os:
   - linux
 julia:
   - 0.6
+  - 0.7
+  - 1.0
   - nightly
 notifications:
   email: false
 git:
   depth: 99999999
-
-# uncomment the following lines to allow failures on nightly julia
-# (tests will run but not make your overall status red)
 matrix:
  allow_failures:
  - julia: nightly
-
 branches:
   only:
     - master
-
-before_script:
-  - julia -e 'Pkg.init(); Pkg.add("MeshCat"); Pkg.checkout("MeshCat")'
-
+    - /^v[0-9]+\.[0-9]+\.[0-9]+$/ # version tags
+# before_script:
+#   - julia -e 'Pkg.init(); Pkg.add("MeshCat"); Pkg.checkout("MeshCat")'
 after_success:
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("MeshCatMechanisms")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia test/coverage.jl
