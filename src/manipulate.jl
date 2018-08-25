@@ -50,7 +50,6 @@ function widget(joint::Joint, initial_value=zeros(num_positions(joint)); prefix=
     keys = Symbol.(slider_labels(joint))
     w = Widget{:rbd_joint}(OrderedDict(zip(keys, s)))
     w.output = combined_observable(joint, s)
-    w.display = map(identity, w.output)
     w.layout = x -> vbox(s...)
     w
 end

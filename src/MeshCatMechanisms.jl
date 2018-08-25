@@ -32,7 +32,6 @@ using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource
 using GeometryTypes: HyperSphere, Point
-import Compat
 
 include("visualizer.jl")
 include("animate.jl")
