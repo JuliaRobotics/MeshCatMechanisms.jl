@@ -15,8 +15,14 @@ using Blink
 AtomShell.isinstalled() || AtomShell.install()
 
 # Create a random mechanism and its associated visualizer
-using Compat
-Compat.Random.seed!(75)  # seed the random number generator so we get repeatable results
+
+# seed the random number generator so we get repeatable results
+if VERSION < v"0.7.0-DEV.3406"
+    srand(75)
+else
+    import Random
+    Random.seed!(75)
+end
 mechanism = rand_chain_mechanism(Float64,
     [QuaternionFloating{Float64}; [Revolute{Float64} for i = 1:5]]...)
 mvis = MechanismVisualizer(mechanism, Skeleton(randomize_colors=true))
