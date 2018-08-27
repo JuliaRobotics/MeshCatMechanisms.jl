@@ -1,4 +1,4 @@
-using Base.Test
+using Test
 using MeshCat
 using MeshCatMechanisms
 using RigidBodyDynamics
@@ -22,7 +22,7 @@ vis = Visualizer()
         set_configuration!(mvis, findjoint(robot, "shoulder"), 1.0)
         @test configuration(mvis) == [1.0, -0.5]
         @test configuration(mvis, findjoint(robot, "shoulder")) == [1.0]
-        copy!(mvis, [0.1, -0.6, 0.0, 0.0])
+        copyto!(mvis, [0.1, -0.6, 0.0, 0.0])
         @test configuration(mvis) == [0.1, -0.6]
 
         setelement!(mvis, default_frame(bodies(robot)[end]))
@@ -80,8 +80,8 @@ vis = Visualizer()
             damping = 2.
             τ = -damping * velocity(state)
             dynamics!(result, state, τ)
-            copy!(vd, result.v̇)
-            copy!(sd, result.ṡ)
+            copyto!(vd, result.v̇)
+            copyto!(sd, result.ṡ)
             nothing
         end
         state = MechanismState(robot, randn(2), randn(2))
