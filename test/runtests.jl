@@ -6,6 +6,7 @@ using RigidBodyDynamics.OdeIntegrators
 using CoordinateTransformations: Translation
 using ValkyrieRobot
 using NBInclude
+using StaticArrays
 
 vis = Visualizer()
 
@@ -87,6 +88,13 @@ vis = Visualizer()
         state = MechanismState(robot, randn(2), randn(2))
         integrator = MuntheKaasIntegrator(state, damped_dynamics!, runge_kutta_4(Float64), MeshCatSink(mvis))
         integrate(integrator, 10., 1e-3, max_realtime_rate = 1.)
+    end
+
+    @testset "position bounds resolution" begin
+        j = Joint("foo", Revolute(SVector(1., 0, 0)))
+        RigidBodyDynamics.position_bounds(j) .= RigidBodyDynamics.Bounds(-1.234, 0.0)
+        MeshCatMechanisms.sliders(j)
+        MeshCatMechanisms.widget(j)
     end
 
     @testset "manipulation" begin
