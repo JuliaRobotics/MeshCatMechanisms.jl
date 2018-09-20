@@ -6,7 +6,7 @@ using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics: Bounds, position_bounds, lower, upper
 using InteractBase: slider, Widget, observe, vbox
-using DataStructures: OrderedDict
+using OrderedCollections: OrderedDict
 
 function remove_infs(b::Bounds, default=Float64(π))
     Bounds(isfinite(lower(b)) ? lower(b) : -default,
