@@ -6,7 +6,7 @@ using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics: Bounds, position_bounds, lower, upper
 using InteractBase: slider, Widget, observe, vbox
-using DataStructures: OrderedDict
+using OrderedCollections: OrderedDict
 
 function remove_infs(b::Bounds, default=Float64(π))
     Bounds(isfinite(lower(b)) ? lower(b) : -default,
@@ -22,12 +22,13 @@ end
 slider_labels(joint::Joint) = [string("q", i) for i in 1:num_positions(joint)]
 slider_labels(joint::Joint{T, <:QuaternionFloating}) where {T} = ["rw", "rx", "ry", "rz", "x", "y", "z"]
 
-function sliders(joint::Joint, values=zeros(num_positions(joint));
+function sliders(joint::Joint, values=clamp.(zeros(num_positions(joint)), position_bounds(joint));
                  bounds=slider_range(joint),
                  labels=slider_labels(joint),
                  resolution=0.01, prefix="")
     map(bounds, labels, values) do b, label, value
-        slider(lower(b):resolution:upper(b),
+        num_steps = ceil(Int, (upper(b) - lower(b)) / resolution)
+        slider(range(lower(b), stop=upper(b), length=num_steps),
                value=value,
                label=string(prefix, label))
     end
@@ -45,7 +46,7 @@ function widget(joint::Joint{T, <:Fixed}, args...) where T
     Widget{:rbd_joint}()
 end
 
-function widget(joint::Joint, initial_value=zeros(num_positions(joint)); prefix=string(joint, '.'))
+function widget(joint::Joint, initial_value=clamp.(zeros(num_positions(joint)), position_bounds(joint)); prefix=string(joint, '.'))
     s = sliders(joint, initial_value, prefix=prefix)
     keys = Symbol.(slider_labels(joint))
     w = Widget{:rbd_joint}(OrderedDict(zip(keys, s)))

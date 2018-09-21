@@ -1,7 +1,7 @@
 julia 0.7
 ColorTypes 0.2.0
 CoordinateTransformations 0.4.1
-DataStructures 0.7
+OrderedCollections 1.0
 GeometryTypes 0.4
 Interpolations 0.3.6
 InteractBase 0.8
