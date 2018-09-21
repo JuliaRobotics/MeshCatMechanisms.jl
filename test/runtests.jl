@@ -93,8 +93,8 @@ vis = Visualizer()
     @testset "position bounds resolution" begin
         j = Joint("foo", Revolute(SVector(1., 0, 0)))
         RigidBodyDynamics.position_bounds(j) .= RigidBodyDynamics.Bounds(-1.234, 0.0)
-        MeshCatMechanisms.sliders(j)
-        MeshCatMechanisms.widget(j)
+        MeshCatMechanisms.Manipulate.sliders(j)
+        MeshCatMechanisms.Manipulate.widget(j)
     end
 
     @testset "manipulation" begin
