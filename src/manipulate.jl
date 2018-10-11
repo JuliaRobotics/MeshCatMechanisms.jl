@@ -28,8 +28,9 @@ function sliders(joint::Joint, values=clamp.(zeros(num_positions(joint)), positi
                  resolution=0.01, prefix="")
     map(bounds, labels, values) do b, label, value
         num_steps = ceil(Int, (upper(b) - lower(b)) / resolution)
+        r = range(lower(b), stop=upper(b), length=num_steps)
         slider(range(lower(b), stop=upper(b), length=num_steps),
-               value=value,
+               value=clamp(value, first(r), last(r)),
                label=string(prefix, label))
     end
 end
