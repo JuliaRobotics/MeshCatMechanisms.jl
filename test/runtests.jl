@@ -104,6 +104,14 @@ vis = Visualizer()
         widget = manipulate!(mvis)
     end
 
+    @testset "manipulation - negative bounds issue" begin
+        mechanism = rand_chain_mechanism(Float64, Revolute{Float64})
+        joint = first(joints(mechanism))
+        joint.position_bounds .= RigidBodyDynamics.Bounds(-2.0, -1.0)
+        mvis = MechanismVisualizer(mechanism)
+        widget = manipulate!(mvis)
+    end
+
     @testset "examples" begin
         dir = joinpath(@__DIR__, "..", "examples")
         for file in readdir(dir)
