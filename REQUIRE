@@ -3,7 +3,7 @@ ColorTypes 0.2.0
 CoordinateTransformations 0.4.1
 DataStructures 0.7
 GeometryTypes 0.4
-Interpolations 0.3.6
+Interpolations 0.9
 InteractBase 0.8
 LoopThrottle 0.0.1
 MechanismGeometries 0.0.1

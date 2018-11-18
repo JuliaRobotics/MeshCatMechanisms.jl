@@ -21,7 +21,7 @@ function animate(vis::MechanismVisualizer,
     walltime0 = time()
     @throttle framenum while true
         t = min(tf, t0 + (time() - walltime0) * realtimerate)
-        q = interpolated_configurations[t]
+        q = interpolated_configurations(t)
         set_configuration!(state, q)
         rbd.normalize_configuration!(state)
         _render_state!(vis)
@@ -43,7 +43,7 @@ function MeshCat.setanimation!(mvis::MechanismVisualizer,
     num_frames = floor(Int, (times[end] - first(times)) * fps)
     for frame in 0:num_frames
         time = first(times) + frame / fps
-        set_configuration!(state(mvis), interpolated_configurations[time])
+        set_configuration!(state(mvis), interpolated_configurations(time))
         atframe(animation, visualizer(mvis), frame) do frame_visualizer
             _render_state!(MechanismVisualizer(state(mvis), frame_visualizer))
         end
