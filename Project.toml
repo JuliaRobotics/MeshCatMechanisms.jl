@@ -1,0 +1,41 @@
+name = "MeshCatMechanisms"
+uuid = "6ad125db-dd91-5488-b820-c1df6aab299d"
+version = "0.4.0"
+
+[deps]
+ColorTypes = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
+CoordinateTransformations = "150eb455-5306-5404-9cee-2592286d6298"
+GeometryTypes = "4d00f742-c7ba-57c2-abde-4428a4b178cb"
+InteractBase = "d3863d7c-f0c8-5437-a7b4-3ae773c01009"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+LoopThrottle = "39f5be34-8529-5463-bac7-bf6867c840a3"
+MechanismGeometries = "931e9471-e8fb-5385-a477-07ad12718aca"
+MeshCat = "283c5d60-a78f-5afe-a0af-af636b173e11"
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
+
+[compat]
+ColorTypes = "≥ 0.2.0"
+CoordinateTransformations = "≥ 0.4.1"
+GeometryTypes = "≥ 0.4.0"
+InteractBase = "≥ 0.8.0"
+Interpolations = "≥ 0.9.0"
+LoopThrottle = "≥ 0.0.1"
+MechanismGeometries = "≥ 0.2.0"
+MeshCat = "≥ 0.6.0"
+NBInclude = "≥ 1.1.0"
+OrderedCollections = "≥ 1.0.0"
+RigidBodyDynamics = "≥ 0.4.0"
+ValkyrieRobot = "≥ 0.0.1"
+julia = "≥ 0.7.0"
+
+[extras]
+Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
+NBInclude = "0db19996-df87-5ea3-a455-e3a50d440464"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+ValkyrieRobot = "c74b26e8-f247-5d24-b013-c11a2bbd97c6"
+
+[targets]
+test = ["StaticArrays", "Pkg", "NBInclude", "Test", "Blink", "ValkyrieRobot"]

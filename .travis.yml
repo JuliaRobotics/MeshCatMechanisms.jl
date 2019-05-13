@@ -3,8 +3,8 @@ language: julia
 os:
   - linux
 julia:
-  - 0.7
   - 1.0
+  - 1.1
   - nightly
 notifications:
   email: false
@@ -15,7 +15,5 @@ branches:
   only:
     - master
     - /^v[0-9]+\.[0-9]+\.[0-9]+$/ # version tags
-# before_script:
-#   - julia -e 'Pkg.init(); Pkg.add("MeshCat"); Pkg.checkout("MeshCat")'
 after_success:
-  - julia test/coverage.jl
+  - julia --project -e 'using Pkg; pkg"add Coverage"; using Coverage; Codecov.submit(Codecov.process_folder())'
