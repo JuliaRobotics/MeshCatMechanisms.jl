@@ -13,7 +13,7 @@ vis = Visualizer()
 @testset "MeshCatMechanisms" begin
     @testset "URDF mechanism" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
-        robot = parse_urdf(Float64, urdf)
+        robot = parse_urdf(urdf, remove_fixed_tree_joints=false)
         mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         if !haskey(ENV, "CI")
             open(mvis)
@@ -39,8 +39,7 @@ vis = Visualizer()
 
     @testset "URDF with fixed joints" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot_fixed.urdf")
-        robot = parse_urdf(Float64, urdf)
-        RigidBodyDynamics.remove_fixed_tree_joints!(robot)
+        robot = parse_urdf(urdf)
         delete!(vis)
         mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis)
         set_configuration!(mvis, [0.5])
@@ -73,7 +72,7 @@ vis = Visualizer()
 
     @testset "visualization during simulation" begin
         urdf = joinpath(@__DIR__, "urdf", "Acrobot.urdf")
-        robot = parse_urdf(Float64, urdf)
+        robot = parse_urdf(urdf, remove_fixed_tree_joints=false)
         mvis = MechanismVisualizer(robot, URDFVisuals(urdf), vis[:acrobot][:robot])
         settransform!(vis[:acrobot], Translation(0, -2, 0))
         result = DynamicsResult{Float64}(robot)
