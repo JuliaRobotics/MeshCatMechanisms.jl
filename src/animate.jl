@@ -43,9 +43,10 @@ function MeshCat.setanimation!(mvis::MechanismVisualizer,
     num_frames = floor(Int, (times[end] - first(times)) * fps)
     for frame in 0:num_frames
         time = first(times) + frame / fps
-        set_configuration!(state(mvis), interpolated_configurations(time))
-        atframe(animation, visualizer(mvis), frame) do frame_visualizer
-            _render_state!(MechanismVisualizer(state(mvis), frame_visualizer))
+        let mvis = mvis, interpolated_configurations = interpolated_configurations
+            atframe(animation,  frame) do
+                set_configuration!(mvis, interpolated_configurations(time))
+            end
         end
     end
     setanimation!(visualizer(mvis), animation, play=play, repetitions=repetitions)
