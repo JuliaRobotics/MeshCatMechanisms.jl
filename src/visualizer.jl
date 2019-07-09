@@ -117,7 +117,8 @@ end
 
 function _path(mechanism, body)
     body_ancestors = ancestors(body, mechanism.tree)
-    path = string.(reverse(body_ancestors))
+    # path = string.(reverse(body_ancestors)) # TODO: use this again once https://github.com/jrevels/Cassette.jl/issues/89 is fixed
+    path = [string(body_ancestors[i]) for i in length(body_ancestors) : -1 : 1]
 end
 
 
