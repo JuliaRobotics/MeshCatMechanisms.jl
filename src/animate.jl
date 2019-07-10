@@ -32,14 +32,14 @@ end
 
 function MeshCat.setanimation!(mvis::MechanismVisualizer,
                       times::AbstractVector{<:Real},
-                      configurations::AbstractVector{<:AbstractVector{<:Real}};
-                      fps::Integer=30,
+                      configurations::AbstractVector{<:AbstractVector{<:Real}},
+                      animation::Animation=Animation();
                       play::Bool=true,
                       repetitions::Integer=1)
+    fps = animation.default_framerate
     q0 = copy(configuration(state(mvis)))
     @assert axes(times) == axes(configurations)
     interpolated_configurations = interpolate((times,), configurations, Gridded(Linear()))
-    animation = Animation()
     num_frames = floor(Int, (times[end] - first(times)) * fps)
     for frame in 0:num_frames
         time = first(times) + frame / fps
