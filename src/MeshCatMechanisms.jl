@@ -28,7 +28,7 @@ const rbd = RigidBodyDynamics
 using RigidBodyDynamics.Graphs: ancestors, edge_to_parent, source, vertices, root
 using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
-using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource
+using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource, MeshFile
 using GeometryTypes: HyperSphere, Point
 
 include("visualizer.jl")

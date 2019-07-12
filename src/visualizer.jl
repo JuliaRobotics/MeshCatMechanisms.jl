@@ -79,14 +79,22 @@ end
 
 Attach the given geometry to the visualizer at the given frame, using its default material.
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, name::AbstractString="<element>") = setelement!(mvis, frame, Object(geometry), name)
+function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, name::AbstractString="<element>")
+    setelement!(mvis, frame, Object(geometry), name)
+end
 
 """
     setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, name::AbstractString="<element>")
 
 Construct an object with the given geometry and material and attach it to the visualizer
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, name::AbstractString="<element>") = setelement!(mvis, frame, Object(geometry, material), name)
+function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::GeometryLike, material::AbstractMaterial, name::AbstractString="<element>")
+    setelement!(mvis, frame, Object(geometry, material), name)
+end
+
+function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::MeshFile, args...)
+    setelement!(mvis, frame, MeshFileGeometry(geometry.filename), args...)
+end
 
 # Special cases for visualizing frames and points
 """
@@ -94,14 +102,18 @@ setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::Geomet
 
 Add a Triad geometry with the given scale to the visualizer at the specified frame
 """
-setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, name::AbstractString="<element>") = setelement!(mvis, frame, Triad(scale), name)
+function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, scale::Real=0.5, name::AbstractString="<element>")
+    setelement!(mvis, frame, Triad(scale), name)
+end
 
 """
     setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, name::AbstractString="<element>")
 
 Add a HyperSphere geometry with the given radius to the visualizer at the given point
 """
-setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, name::AbstractString="<element>") = setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), name)
+function setelement!(mvis::MechanismVisualizer, point::Point3D, radius::Real=0.05, name::AbstractString="<element>")
+    setelement!(mvis, point.frame, HyperSphere(Point(point.v[1], point.v[2], point.v[3]), convert(eltype(point.v), radius)), name)
+end
 
 function _path(mechanism, body)
     body_ancestors = ancestors(body, mechanism.tree)

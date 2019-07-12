@@ -21,8 +21,8 @@ GeometryTypes = "≥ 0.4.0"
 InteractBase = "≥ 0.8.0"
 Interpolations = "≥ 0.9.0"
 LoopThrottle = "≥ 0.0.1"
-MechanismGeometries = "≥ 0.2.0"
-MeshCat = "≥ 0.6.0"
+MechanismGeometries = "≥ 0.4.0"
+MeshCat = "≥ 0.7.0"
 NBInclude = "≥ 1.1.0"
 OrderedCollections = "≥ 1.0.0"
 RigidBodyDynamics = "2"
@@ -33,9 +33,10 @@ julia = "1"
 Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
 NBInclude = "0db19996-df87-5ea3-a455-e3a50d440464"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 ValkyrieRobot = "c74b26e8-f247-5d24-b013-c11a2bbd97c6"
 
 [targets]
-test = ["StaticArrays", "Pkg", "NBInclude", "Test", "Blink", "ValkyrieRobot"]
+test = ["StaticArrays", "Pkg", "NBInclude", "Test", "Blink", "ValkyrieRobot", "Random"]
