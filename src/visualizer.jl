@@ -92,8 +92,9 @@ function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometr
     setelement!(mvis, frame, Object(geometry, material), name)
 end
 
-function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::MeshFile, args...)
-    setelement!(mvis, frame, MeshFileGeometry(geometry.filename), args...)
+function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::MeshFile, material::AbstractMaterial, name::AbstractString="<element>")
+    # ignore material...
+    setelement!(mvis, frame, MeshFileObject(geometry.filename), name)
 end
 
 # Special cases for visualizing frames and points

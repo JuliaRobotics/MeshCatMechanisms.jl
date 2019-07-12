@@ -31,6 +31,8 @@ using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource, MeshFile
 using GeometryTypes: HyperSphere, Point
 
+# const GeometryLike = Union{MeshCat.GeometryLike, MeshCat.MeshFileObject}
+
 include("visualizer.jl")
 include("animate.jl")
 include("ode_callback.jl")
