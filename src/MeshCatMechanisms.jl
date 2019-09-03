@@ -30,6 +30,7 @@ using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource, MeshFile
 using GeometryTypes: HyperSphere, Point
+using StaticArrays: SDiagonal
 
 include("visualizer.jl")
 include("animate.jl")

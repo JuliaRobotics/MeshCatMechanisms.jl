@@ -58,7 +58,7 @@ tree, so that any other geometries attached to the same body will all move toget
 """
 function setelement!(mvis::MechanismVisualizer, element::VisualElement, name::AbstractString="<element>")
     setelement!(mvis, element.frame, element.geometry, MeshLambertMaterial(color=element.color), name)
-    settransform!(mvis[element.frame][name], element.transform)
+    settransform!(mvis[element.frame][name], element.transform ∘ LinearMap(SDiagonal(element.geometry.scale)))
 end
 
 """

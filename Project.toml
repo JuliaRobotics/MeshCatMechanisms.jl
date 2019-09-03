@@ -13,6 +13,7 @@ MechanismGeometries = "931e9471-e8fb-5385-a477-07ad12718aca"
 MeshCat = "283c5d60-a78f-5afe-a0af-af636b173e11"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [compat]
 ColorTypes = "≥ 0.2.0"
