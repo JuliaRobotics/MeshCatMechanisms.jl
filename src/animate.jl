@@ -49,14 +49,31 @@ function MeshCat.Animation(mvis::MechanismVisualizer,
     return animation
 end
 
+MeshCat.setanimation!(mvis::MechanismVisualizer, args...; kw...) =
+    setanimation!(visualizer(mvis), args...; kw...)
+
 function MeshCat.setanimation!(mvis::MechanismVisualizer,
                       times::AbstractVector{<:Real},
                       configurations::AbstractVector{<:AbstractVector{<:Real}};
                       fps::Integer=30,
                       play::Bool=true,
                       repetitions::Integer=1)
-    q0 = copy(configuration(state(mvis)))
-    animation = Animation(mvis, times, configurations; fps=fps)
-    setanimation!(visualizer(mvis), animation, play=play, repetitions=repetitions)
-    set_configuration!(state(mvis), q0)
+    Base.depwarn("""
+    `setanimation!(mvis, times, configurations; ..)` is deprecated. Instead, you can construct an `Animation` and then call `setanimation!` with the result.
+
+    For examle, if you previously did:
+
+    ```
+    setanimation!(mvis, times, configurations, fps=30, play=true)
+    ```
+
+    You should now do:
+
+    ```
+    animation = Animation(mvis, times, configurations, fps=25)
+    setanimation!(mvis, animation, play=true)
+    ```
+    """, :setanimation_t_q)
+    animation = Animation(mvis, times, configurations, fps=fps)
+    setanimation!(mvis, animation, play=play, repetitions=repetitions)
 end
