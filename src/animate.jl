@@ -61,7 +61,7 @@ function MeshCat.setanimation!(mvis::MechanismVisualizer,
     Base.depwarn("""
     `setanimation!(mvis, times, configurations; ..)` is deprecated. Instead, you can construct an `Animation` and then call `setanimation!` with the result.
 
-    For examle, if you previously did:
+    For example, if you previously did:
 
     ```
     setanimation!(mvis, times, configurations, fps=30, play=true)
