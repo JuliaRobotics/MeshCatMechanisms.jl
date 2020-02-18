@@ -7,7 +7,7 @@ export MechanismVisualizer,
        manipulate!
 
 # Re-export from MeshCat.jl
-export IJuliaCell,
+export render,
        Triad,
        setanimation!
 
