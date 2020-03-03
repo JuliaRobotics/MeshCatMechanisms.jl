@@ -18,7 +18,7 @@ RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
 [compat]
 ColorTypes = "0.7, 0.8, 0.9"
 CoordinateTransformations = "0.5"
-GeometryTypes = "0.6, 0.7"
+GeometryTypes = "0.6, 0.7, 0.8"
 InteractBase = "0.8, 0.9, 0.10"
 Interpolations = "0.9, 0.10, 0.11, 0.12"
 LoopThrottle = "0.1"
