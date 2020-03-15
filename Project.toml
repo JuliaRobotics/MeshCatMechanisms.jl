@@ -16,7 +16,7 @@ OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
 
 [compat]
-ColorTypes = "0.7, 0.8, 0.9"
+ColorTypes = "0.7, 0.8, 0.9, 0.10"
 CoordinateTransformations = "0.5"
 GeometryTypes = "0.6, 0.7"
 InteractBase = "0.8, 0.9, 0.10"
