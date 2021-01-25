@@ -29,7 +29,7 @@ using RigidBodyDynamics.Graphs: ancestors, edge_to_parent, source, vertices, roo
 using Interpolations: interpolate, Gridded, Linear
 using LoopThrottle: @throttle
 using MechanismGeometries: visual_elements, VisualElement, Skeleton, URDFVisuals, AbstractGeometrySource, MeshFile
-using GeometryTypes: HyperSphere, Point
+using GeometryBasics: HyperSphere, Point
 
 include("visualizer.jl")
 include("animate.jl")
