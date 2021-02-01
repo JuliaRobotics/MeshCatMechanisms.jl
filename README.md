@@ -1,6 +1,6 @@
 # MeshCatMechanisms
 
-[![Build Status](https://travis-ci.org/JuliaRobotics/MeshCatMechanisms.jl.svg?branch=master)](https://travis-ci.org/JuliaRobotics/MeshCatMechanisms.jl)
+[![Build Status](https://github.com/JuliaRobotics/MeshCatMechanisms.jl/workflows/CI/badge.svg)](https://github.com/JuliaRobotics/MeshCatMechanisms.jl/actions?query=workflow%3ACI)
 [![codecov.io](http://codecov.io/github/JuliaRobotics/MeshCatMechanisms.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaRobotics/MeshCatMechanisms.jl?branch=master)
 
 MeshCatMechanisms.jl adds support for visualizing mechanisms and robots from [RigidBodyDynamics.jl](https://github.com/tkoolen/RigidBodyDynamics.jl) with [MeshCat.jl](https://github.com/rdeits/MeshCat.jl). All geometries are constructed using [MechanismGeometries.jl](https://github.com/rdeits/MechanismGeometries.jl).
