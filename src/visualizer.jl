@@ -94,11 +94,10 @@ end
 
 function setelement!(mvis::MechanismVisualizer, frame::CartesianFrame3D, geometry::MeshFile, material::AbstractMaterial, name::AbstractString="<element>")
     ext = lowercase(splitext(geometry.filename)[2])
-    # We load .obj and .dae files as MeshFileObject so that threejs can
-    # handle loading their built-in primitives, materials, and textures.
-    # All other meshes are loaded as MeshFileGeometry which uses MeshIO
-    # to load the mesh geometry in Julia (but does not currently handle
-    # any materials or textures).
+    # We load .dae files as MeshFileObject so that threejs can handle loading
+    # their built-in primitives, materials, and textures. All other meshes are
+    # loaded as MeshFileGeometry which uses MeshIO to load the mesh geometry in
+    # Julia (but does not currently handle any materials or textures).
     if ext == ".dae"
         obj = MeshFileObject(geometry.filename)
     else
