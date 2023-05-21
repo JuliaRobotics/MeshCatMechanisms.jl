@@ -11,20 +11,18 @@ Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
 LoopThrottle = "39f5be34-8529-5463-bac7-bf6867c840a3"
 MechanismGeometries = "931e9471-e8fb-5385-a477-07ad12718aca"
 MeshCat = "283c5d60-a78f-5afe-a0af-af636b173e11"
-Mux = "a975b10e-0019-58db-a62f-e48ff68538c9"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
 
 [compat]
-ColorTypes = "0.7, 0.8, 0.9, 0.10"
+ColorTypes = "0.7, 0.8, 0.9, 0.10, 0.11"
 CoordinateTransformations = "0.5, 0.6"
 GeometryBasics = "0.2, 0.3, 0.4"
 InteractBase = "0.8, 0.9, 0.10"
-Interpolations = "0.9, 0.10, 0.11, 0.12, 0.13"
+Interpolations = "0.9, 0.10, 0.11, 0.12, 0.13, 0.14"
 LoopThrottle = "0.1"
 MechanismGeometries = "0.7"
-MeshCat = "0.13, 0.14"
-Mux = "0.7.1"
+MeshCat = "0.13, 0.14, 0.15"
 NBInclude = "1, 2"
 OrderedCollections = "1"
 RigidBodyDynamics = "2"
@@ -32,7 +30,6 @@ ValkyrieRobot = "0.2.1"
 julia = "1.3"
 
 [extras]
-Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
 NBInclude = "0db19996-df87-5ea3-a455-e3a50d440464"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -41,4 +38,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 ValkyrieRobot = "c74b26e8-f247-5d24-b013-c11a2bbd97c6"
 
 [targets]
-test = ["StaticArrays", "Pkg", "NBInclude", "Test", "Blink", "ValkyrieRobot", "Random"]
+test = ["StaticArrays", "Pkg", "NBInclude", "Test", "ValkyrieRobot", "Random"]

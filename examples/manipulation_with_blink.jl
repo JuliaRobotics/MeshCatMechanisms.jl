@@ -8,11 +8,9 @@
 using MeshCatMechanisms
 using RigidBodyDynamics
 
-# Blink provides the standalone window we'll use to display
+# Electron provides the standalone window we'll use to display
 # the visualizer and controls
-using Blink
-# Install the Blink.AtomShell if it isn't already installed
-AtomShell.isinstalled() || AtomShell.install()
+import Electron
 
 # Create a random mechanism and its associated visualizer
 
@@ -28,7 +26,7 @@ mvis = MechanismVisualizer(mechanism, Skeleton(randomize_colors=true))
 # We don't open windows when we're running this test
 # on the Travis CI build servers
 if !haskey(ENV, "CI")
-    open(mvis, Window())
+    open(mvis, Electron.Application())
 end
 
 # Create sliders to manipulate the visualizer's configuration
@@ -39,5 +37,5 @@ widget = manipulate!(mvis)
 # We don't open windows when we're running this test
 # on the Travis CI build servers
 if !haskey(ENV, "CI")
-    body!(Window(), widget)
+    body!(Electron.Application(), widget)
 end

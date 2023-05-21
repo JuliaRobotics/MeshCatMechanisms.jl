@@ -124,7 +124,7 @@ vis = Visualizer()
         for file in readdir(dir)
             base, ext = splitext(file)
             if ext == ".jl"
-                if file == "manipulation_with_blink.jl"
+                if file == "manipulation_with_electron.jl"
                     # The interaction between MeshCat and Interact
                     # causes weird task deadlocks that I don't want
                     # to deal with right now.
