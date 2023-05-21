@@ -124,18 +124,8 @@ vis = Visualizer()
         for file in readdir(dir)
             base, ext = splitext(file)
             if ext == ".jl"
-                if file == "manipulation_with_electron.jl"
-                    # The interaction between MeshCat and Interact
-                    # causes weird task deadlocks that I don't want
-                    # to deal with right now.
-                    @warn "Skipping $file"
-                else
-                    @info "Running $file"
-                    include(joinpath(dir, file))
-                end
-            elseif ext == ".ipynb"
-                @info "Running notebook $file"
-                @nbinclude(joinpath(dir, file))
+                @info "Running $file"
+                include(joinpath(dir, file))
             end
         end
     end
