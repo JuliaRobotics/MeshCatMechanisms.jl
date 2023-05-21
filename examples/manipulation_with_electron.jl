@@ -22,20 +22,8 @@ mechanism = rand_chain_mechanism(Float64,
 mvis = MechanismVisualizer(mechanism, Skeleton(randomize_colors=true))
 
 # Open the visualizer in a new window
-#
-# We don't open windows when we're running this test
-# on the Travis CI build servers
-if !haskey(ENV, "CI")
-    open(mvis, Electron.Application())
-end
+open(mvis, Electron.Application())
 
 # Create sliders to manipulate the visualizer's configuration
 widget = manipulate!(mvis)
-
-# Render those sliders in a new window
-#
-# We don't open windows when we're running this test
-# on the Travis CI build servers
-if !haskey(ENV, "CI")
-    body!(Electron.Application(), widget)
-end
+body!(Electron.Application(), widget)
