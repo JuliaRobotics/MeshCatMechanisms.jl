@@ -10,7 +10,7 @@ configurations by linearly interpolating the configuration vectors.
 function animate(mvis::MechanismVisualizer,
                  times::Vector{Float64},
                  configurations::AbstractVector{<:AbstractVector{Float64}};
-                 fps::Float64 = 60., realtimerate::Float64 = 1.)
+                 fps::Float64=60.0, realtimerate::Float64=1.0)
     @assert fps > 0
     @assert 0 < realtimerate < Inf
 
@@ -36,12 +36,12 @@ function MeshCat.Animation(mvis::MechanismVisualizer,
                            fps::Integer=30)
     @assert axes(times) == axes(configurations)
     interpolated_configurations = interpolate((times,), configurations, Gridded(Linear()))
-    animation = Animation(mvis.visualizer["/meshcat"])
+    animation = Animation(mvis.visualizer)
     num_frames = floor(Int, (times[end] - first(times)) * fps)
-    for frame in 0 : num_frames
+    for frame in 0:num_frames
         time = first(times) + frame / fps
-        let mvis = mvis, interpolated_configurations = interpolated_configurations, time=time
-            atframe(animation,  frame) do
+        let mvis = mvis, interpolated_configurations = interpolated_configurations, time = time
+            atframe(animation, frame) do
                 set_configuration!(mvis, interpolated_configurations(time))
             end
         end
@@ -53,11 +53,11 @@ MeshCat.setanimation!(mvis::MechanismVisualizer, args...; kw...) =
     setanimation!(visualizer(mvis), args...; kw...)
 
 function MeshCat.setanimation!(mvis::MechanismVisualizer,
-                      times::AbstractVector{<:Real},
-                      configurations::AbstractVector{<:AbstractVector{<:Real}};
-                      fps::Integer=30,
-                      play::Bool=true,
-                      repetitions::Integer=1)
+                               times::AbstractVector{<:Real},
+                               configurations::AbstractVector{<:AbstractVector{<:Real}};
+                               fps::Integer=30,
+                               play::Bool=true,
+                               repetitions::Integer=1)
     Base.depwarn("""
     `setanimation!(mvis, times, configurations; ..)` is deprecated. Instead, you can construct an `Animation` and then call `setanimation!` with the result.
 
