@@ -1,5 +1,5 @@
 """
-    animate(vis::MechanismVisualizer,
+    animate(mvis::MechanismVisualizer,
             times::Vector{Float64},
             configurations::Vector{Vector{Float64}};
             fps::Float64=60, realtimerate::Float64=1.)
@@ -7,14 +7,14 @@
 Animate the given mechanism passing through a time-coded series of
 configurations by linearly interpolating the configuration vectors.
 """
-function animate(vis::MechanismVisualizer,
+function animate(mvis::MechanismVisualizer,
                  times::Vector{Float64},
                  configurations::AbstractVector{<:AbstractVector{Float64}};
                  fps::Float64 = 60., realtimerate::Float64 = 1.)
     @assert fps > 0
     @assert 0 < realtimerate < Inf
 
-    state = vis.state
+    state = mvis.state
     interpolated_configurations = interpolate((times,), configurations, Gridded(Linear()))
     t0, tf = first(times), last(times)
     framenum = 0
@@ -24,19 +24,19 @@ function animate(vis::MechanismVisualizer,
         q = interpolated_configurations(t)
         set_configuration!(state, q)
         rbd.normalize_configuration!(state)
-        _render_state!(vis)
+        _render_state!(mvis)
         framenum += 1
         t == tf && break
     end max_rate = fps
 end
 
 function MeshCat.Animation(mvis::MechanismVisualizer,
-        times::AbstractVector{<:Real},
-        configurations::AbstractVector{<:AbstractVector{<:Real}};
-        fps::Integer=30)
+                           times::AbstractVector{<:Real},
+                           configurations::AbstractVector{<:AbstractVector{<:Real}};
+                           fps::Integer=30)
     @assert axes(times) == axes(configurations)
     interpolated_configurations = interpolate((times,), configurations, Gridded(Linear()))
-    animation = Animation()
+    animation = Animation(mvis.visualizer["/meshcat"])
     num_frames = floor(Int, (times[end] - first(times)) * fps)
     for frame in 0 : num_frames
         time = first(times) + frame / fps
