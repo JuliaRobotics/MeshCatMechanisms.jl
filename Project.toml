@@ -37,8 +37,5 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 ValkyrieRobot = "c74b26e8-f247-5d24-b013-c11a2bbd97c6"
 
-[sources]
-MeshCat = {rev = "rd/drop-cassette", url = "https://github.com/rdeits/MeshCat.jl.git"}
-
 [targets]
 test = ["StaticArrays", "Pkg", "NBInclude", "Test", "ValkyrieRobot", "Random"]
