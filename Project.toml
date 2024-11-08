@@ -14,6 +14,9 @@ MeshCat = "283c5d60-a78f-5afe-a0af-af636b173e11"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 RigidBodyDynamics = "366cf18f-59d5-5db9-a4de-86a9f6786172"
 
+[sources]
+ValkyrieRobot = {rev = "hf/dev", url = "https://github.com/ferrolho/ValkyrieRobot.jl.git"}
+
 [compat]
 ColorTypes = "0.7, 0.8, 0.9, 0.10, 0.11, 0.12"
 CoordinateTransformations = "0.5, 0.6"
@@ -26,7 +29,7 @@ MeshCat = "1"
 NBInclude = "1, 2"
 OrderedCollections = "1"
 RigidBodyDynamics = "2"
-ValkyrieRobot = "0.2.1"
+ValkyrieRobot = "0.2.2"
 julia = "1.6"
 
 [extras]
