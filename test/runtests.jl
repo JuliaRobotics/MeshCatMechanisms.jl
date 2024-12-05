@@ -4,9 +4,15 @@ using MeshCatMechanisms
 using RigidBodyDynamics
 using RigidBodyDynamics.OdeIntegrators
 using CoordinateTransformations: Translation
-using ValkyrieRobot
 using NBInclude
 using StaticArrays
+
+import Pkg
+Pkg.activate(temp=true)
+# Can be replaced by simply `Pkg.add(ValkyrieRobot)` when this PR
+# gets merged: https://github.com/tkoolen/ValkyrieRobot.jl/pull/13
+Pkg.add(url="https://github.com/ferrolho/ValkyrieRobot.jl", rev="hf/dev")
+using ValkyrieRobot
 
 vis = Visualizer()
 
